@@ -1,0 +1,41 @@
+@startuml
+
+' in order to change this diagram, please got to 
+http://www.planttext.com
+' http://plantuml.com/en/state-diagram
+	
+skinparam state {
+  StartColor Black
+  EndColor Black
+  BackgroundColor LightYellow
+  BackgroundColor<<OrderIncomplete>> LightGreen
+  BackgroundColor<<OrderProcessing>> LimeGreen
+  BackgroundColor<<OrderProcessed>> Green
+  BackgroundColor<<OrderErrored>> Red
+  BorderColor Black
+}
+
+title Order Item State Model
+state "incomplete" as Incomplete <<OrderIncomplete>>
+state "booked" as Booked <<OrderProcessing>>	
+state "unbooked" as Unbooked <<OrderProcessing>>
+state "confirmation failed" as ConfirmationFailed <<OrderErrored>>
+state "confirmed" as Confirmed <<OrderProcessing>>
+state "finished" as Finished <<OrderProcessing>>
+state "unknown" as Unknown <<OrderErrored>>
+
+' nominal case
+[*] -down-> Incomplete : //POST /orders//
+Incomplete -down-> Booked : //PATCH /order_items/:id/book//
+Booked -down-> Confirmed : //PATCH /order_items/:id/confirm//
+Confirmed -down-> Finished : //PATCH /order_items/:id/finish//
+Finished -down-> [*]
+
+
+' non nominal case
+Booked --> ConfirmationFailed : when confirmation failed
+Booked --> Unknown : when a timeout appear
+
+' notes
+
+@enduml
