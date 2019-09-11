@@ -1,7 +1,7 @@
 # locohub-api-documentation
 
 This repo aims to store static resources for locohub API documentation. It means you can store for example:
-* plantUML diagram sources [documentation](https://github.com/orgs/loco2/teams/locohub/discussions/plantuml.com/en/)
+* plantUML diagram sources [documentation](http://plantuml.com/en/)
 * images
 
 In order to include those static resources into markdown :
