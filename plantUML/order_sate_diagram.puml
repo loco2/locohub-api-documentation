@@ -1,7 +1,7 @@
 @startuml
 
 ' in order to change this diagram, please got to 
-http://www.planttext.com
+' http://www.planttext.com
 ' http://plantuml.com/en/state-diagram
 	
 skinparam state {
@@ -18,7 +18,6 @@ skinparam state {
 title Order Item State Model
 state "incomplete" as Incomplete <<OrderIncomplete>>
 state "booked" as Booked <<OrderProcessing>>	
-state "unbooked" as Unbooked <<OrderProcessing>>
 state "confirmation failed" as ConfirmationFailed <<OrderErrored>>
 state "confirmed" as Confirmed <<OrderProcessing>>
 state "finished" as Finished <<OrderProcessing>>
