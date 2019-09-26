@@ -1,9 +1,6 @@
 @startuml
 
-' in order to change this diagram, please got to 
-' http://www.planttext.com
-' http://plantuml.com/en/state-diagram
-	
+' in order to change this diagram, please got to http://www.planttext.com
 skinparam state {
   StartColor Black
   EndColor Black
@@ -13,28 +10,17 @@ skinparam state {
   BackgroundColor<<OrderProcessed>> Green
   BackgroundColor<<OrderErrored>> Red
   BorderColor Black
+  FontName Impact
 }
+title Order State Model
+state "1 - incomplete" as Incomplete<<OrderIncomplete>>
+state "2 - processing" as Processing <<OrderProcessing>>
+state "3 - processed" as Processed <<OrderProcessed>>
+'state "X - errored" as Errored <<OrderErrred>>
 
-title Order Item State Model
-state "incomplete" as Incomplete <<OrderIncomplete>>
-state "booked" as Booked <<OrderProcessing>>	
-state "confirmation failed" as ConfirmationFailed <<OrderErrored>>
-state "confirmed" as Confirmed <<OrderProcessing>>
-state "finished" as Finished <<OrderProcessing>>
-state "unknown" as Unknown <<OrderErrored>>
-
-' nominal case
-[*] -down-> Incomplete : //POST /orders//
-Incomplete -down-> Booked : //PATCH /order_items/:id/book//
-Booked -down-> Confirmed : //PATCH /order_items/:id/confirm//
-Confirmed -down-> Finished : //PATCH /order_items/:id/finish//
-Finished -down-> [*]
-
-
-' non nominal case
-Booked --> ConfirmationFailed : when confirmation failed
-Booked --> Unknown : when a timeout appear
-
-' notes
+[*] -down->Incomplete
+Incomplete -down-> Processing : 1st call to /order_items/{id}/book
+Processing -down-> Processed : all orderItems are "confirmed"
+Processed -down-> [*]
 
 @enduml
