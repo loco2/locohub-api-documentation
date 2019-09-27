@@ -1,0 +1,29 @@
+@startuml
+
+' in order to change this diagram, please got to http://www.planttext.com
+skinparam state {
+  StartColor Black
+  EndColor Black
+  BackgroundColor LightYellow
+  BackgroundColor<<Initiated>> LightGreen
+  BackgroundColor<<Quoted>> LimeGreen
+  BackgroundColor<<Confirmed>> Green
+  BackgroundColor<<Errored>> Red
+  BorderColor Black
+  FontName Impact
+}
+title Confirmation Model
+state "1 - initiated" as Initiated<<Initiated>>
+state "2 - quoted" as Quoted <<Quoted>>
+state "3 - confirmed" as Confirmed <<Confirmed>>
+state "X - errored" as Errored <<Errored>>
+
+' non nominal case
+Quoted --> Errored : confirmation failed
+
+[*] -down->Initiated: POST /cancellations
+Initiated -down-> Quoted : PATCH /cancellations/{id}/quote
+Quoted -down-> Confirmed : PATCH /cancellations/{id}/confirm
+Confirmed -down-> [*]
+
+@enduml
