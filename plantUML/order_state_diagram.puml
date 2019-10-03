@@ -1,4 +1,5 @@
 @startuml
+scale 350 width
 
 ' in order to change this diagram, please got to http://www.planttext.com
 skinparam state {
@@ -13,12 +14,15 @@ skinparam state {
   FontName Impact
 }
 title Order State Model
-state "1 - incomplete" as Incomplete<<OrderIncomplete>>
+state "1 - incomplete" as Incomplete <<OrderIncomplete>>
 state "2 - processing" as Processing <<OrderProcessing>>
 state "3 - processed" as Processed <<OrderProcessed>>
-'state "X - errored" as Errored <<OrderErrred>>
+state "errored" as OrderErrored <<OrderErrored>>
 
-[*] -down->Incomplete
+state fork_state <<fork>>
+[*] --> fork_state : POST /orders
+fork_state ---> Incomplete : success
+fork_state --> OrderErrored : prebooking failed
 Incomplete -down-> Processing : 1st call to /order_items/{id}/book
 Processing -down-> Processed : all orderItems are "confirmed"
 Processed -down-> [*]
