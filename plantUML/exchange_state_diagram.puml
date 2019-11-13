@@ -1,0 +1,39 @@
+@startuml
+
+' in order to change this diagram, please got to http://www.planttext.com
+skinparam state {
+  StartColor Black
+  EndColor Black
+  BackgroundColor LightYellow
+  BackgroundColor<<Initiated>> LightGreen
+  BackgroundColor<<Searched>> LimeGreen
+  BackgroundColor<<Quoted>> LimeGreen
+  BackgroundColor<<Confirmed>> Green
+  BackgroundColor<<Errored>> Red
+  BorderColor Black
+  FontName Impact
+}
+title Exchange Model
+state "1 - initiated" as Initiated<<Initiated>>
+Initiated: Order item state = finished
+state "2 - searching for replacement" as Searched <<Searched>>
+Searched: Order item state = finished
+state "3 - quoted" as Quoted <<Quoted>>
+Quoted: Order item state = finished
+Quoted: Replacement item state = incomplete
+state "4 - confirmed" as Confirmed <<Confirmed>>
+Confirmed: Order item state = cancelled    
+Confirmed: Replacement item state = finished
+state "X - errored" as Errored <<Errored>>
+Errored: Order item state = errored    
+
+' non nominal case
+Quoted --> Errored : cancellation failed
+
+[*] -down->Initiated: POST /exchanges
+Initiated -down-> Searched : PATCH/exchanges/{id}/search
+Searched -down-> Quoted : PATCH/exchanges/{id}/quote
+Quoted -down-> Confirmed : PATCH/exchanges/{id}/confirm
+Confirmed -down-> [*]
+
+@enduml
