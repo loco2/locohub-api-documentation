@@ -8,6 +8,7 @@ skinparam state {
   BackgroundColor<<Initiated>> LightGreen
   BackgroundColor<<Quoted>> LimeGreen
   BackgroundColor<<Confirmed>> Green
+  BackgroundColor<<Voided>> Green
   BackgroundColor<<Errored>> Red
   BorderColor Black
   FontName Impact
@@ -21,13 +22,18 @@ state "3 - finished" as Confirmed <<Confirmed>>
 Confirmed: Order item state = cancelled    
 state "X - errored" as Errored <<Errored>>
 Errored: Order item state = errored    
+state "1' - voided" as Voided <<Voided>>
+Voided: Order item state = cancelled
 
 ' non nominal case
 Quoted --> Errored : cancellation failed
+Voided --> Errored : cannot be voided
 
 [*] -down->Initiated: POST /cancellations
 Initiated -down-> Quoted : PATCH /cancellations/{id}/quote
 Quoted -down-> Confirmed : PATCH /cancellations/{id}/confirm
 Confirmed -down-> [*]
+[*] -down->Voided: POST /cancellations/void
+Voided -down-> [*]
 
 @enduml
