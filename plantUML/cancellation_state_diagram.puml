@@ -15,9 +15,9 @@ skinparam state {
 }
 title Cancellation Model
 state "1 - initiated" as Initiated<<Initiated>>
-Initiated: Order item state = finished
+Initiated: Order item state = confirmed
 state "2 - quoted" as Quoted <<Quoted>>
-Quoted: Order item state = finished
+Quoted: Order item state = confirmed
 state "3 - finished" as Confirmed <<Confirmed>>
 Confirmed: Order item state = cancelled    
 state "X - errored" as Errored <<Errored>>
