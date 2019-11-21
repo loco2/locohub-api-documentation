@@ -15,15 +15,15 @@ skinparam state {
 }
 title Exchange Model
 state "1 - initiated" as Initiated<<Initiated>>
-Initiated: Order item state = finished
+Initiated: Order item state = confirmed
 state "2 - searching for replacement" as Searched <<Searched>>
-Searched: Order item state = finished
+Searched: Order item state = confirmed
 state "3 - quoted" as Quoted <<Quoted>>
-Quoted: Order item state = finished
+Quoted: Order item state = confirmed
 Quoted: Replacement item state = incomplete
 state "4 - confirmed" as Confirmed <<Confirmed>>
 Confirmed: Order item state = cancelled    
-Confirmed: Replacement item state = finished
+Confirmed: Replacement item state = confirmed
 state "X - errored" as Errored <<Errored>>
 Errored: Order item state = errored    
 
