@@ -19,15 +19,16 @@ state "incomplete" as Incomplete <<OrderIncomplete>>
 state "booked" as Booked <<OrderProcessing>>
 state "confirmation failed" as ConfirmationFailed <<OrderErrored>>
 state "confirmed" as Confirmed <<OrderProcessing>>
-state "finished" as Finished <<OrderProcessing>>
+state "confirmed" as TicketRetrieved <<OrderProcessing>>
+TicketRetrieved: Order item with tickets data
 state "unknown" as Unknown <<OrderErrored>>
 
 ' nominal case
 [*] -down-> Incomplete : //POST /orders//
 Incomplete -down-> Booked : //PATCH /order_items/:id/book//
 Booked -down-> Confirmed : //PATCH /order_items/:id/confirm//
-Confirmed -down-> Finished : //PATCH /order_items/:id/finish//
-Finished -down-> [*]
+Confirmed -down-> TicketRetrieved : //PATCH /order_items/:id/tickets//
+TicketRetrieved -[#black,dotted]-> Confirmed : Tickets retrievable multiple times
 
 
 ' non nominal case
