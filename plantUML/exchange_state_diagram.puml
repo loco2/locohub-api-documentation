@@ -23,7 +23,7 @@ Quoted: Order item state = confirmed
 Quoted: Replacement item state = incomplete
 state "4 - confirmed" as Confirmed <<Confirmed>>
 Confirmed: Order item state = cancelled    
-Confirmed: Replacement item state = confirmed
+Confirmed: Replacement item(s) state(s) = confirmed
 state "X - errored" as Errored <<Errored>>
 Errored: Order item state = errored    
 
