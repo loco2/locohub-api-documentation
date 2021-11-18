@@ -1,0 +1,28 @@
+@startuml
+
+' in order to change th\is diagram, please got to http://www.planttext.com
+skinparam state {
+  StartColor Black
+  EndColor Black
+  BackgroundColor LightYellow
+  BackgroundColor<<Initiated>> LightGreen
+  BackgroundColor<<Confirmed>> LimeGreen
+  BackgroundColor<<Errored>> Red
+  BorderColor Black
+  FontName Impact
+}
+title Passenger Change Model
+state "1 - initiated" as Initiated<<Initiated>>
+Initiated: PassengeChange state = initiated
+state "2 - submitted" as Confirmed<<Confirmed>>
+Confirmed: PassengerChange state = submitted
+state "X - errored" as Errored <<Errored>>
+Errored: PassengerChange state = errored   
+
+Initiated --> Errored : confirmation failed
+
+[*] -down->Initiated:  POST /passenger_changes
+Initiated -down-> Confirmed :  PATCH /passenger_changes/{id}/confirm
+Confirmed -down-> [*]
+
+@enduml
