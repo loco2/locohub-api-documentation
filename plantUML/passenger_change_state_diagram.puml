@@ -14,8 +14,8 @@ skinparam state {
 title Passenger Change Model
 state "1 - initiated" as Initiated<<Initiated>>
 Initiated: PassengeChange state = initiated
-state "2 - submitted" as Confirmed<<Confirmed>>
-Confirmed: PassengerChange state = submitted
+state "2 - confirmed" as Confirmed<<Confirmed>>
+Confirmed: PassengerChange state = confirmed
 state "X - errored" as Errored <<Errored>>
 Errored: PassengerChange state = errored   
 
@@ -26,3 +26,4 @@ Initiated -down-> Confirmed :  PATCH /passenger_changes/{id}/confirm
 Confirmed -down-> [*]
 
 @enduml
+
